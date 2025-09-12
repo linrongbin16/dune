@@ -19,6 +19,7 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 use std::collections::LinkedList;
 use std::env;
+use std::fmt::Debug;
 use std::fs;
 use std::path::Path;
 use std::rc::Rc;
@@ -78,12 +79,29 @@ pub fn create_origin<'s>(
 pub type ModulePath = String;
 pub type ModuleSource = String;
 
-#[derive(Debug)]
 pub struct ModuleMap {
     pub main: Option<ModulePath>,
     pub index: HashMap<ModulePath, v8::Global<v8::Module>>,
     pub seen: HashMap<ModulePath, ModuleStatus>,
     pub pending: Vec<Rc<RefCell<ModuleGraph>>>,
+}
+
+impl Debug for ModuleMap {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("ModuleMap")
+            .field("main", &self.main)
+            .field(
+                "index",
+                &self
+                    .index
+                    .iter()
+                    .map(|(k, _)| (k.clone(), "v8::Module".to_string()))
+                    .collect::<HashMap<ModulePath, String>>(),
+            )
+            .field("seen", &self.seen)
+            .field("pending", &self.pending)
+            .finish()
+    }
 }
 
 impl ModuleMap {
@@ -209,11 +227,29 @@ impl EsModule {
     }
 }
 
-#[derive(Debug)]
 pub struct ModuleGraph {
     pub kind: ImportKind,
     pub root_rc: Rc<RefCell<EsModule>>,
     pub same_origin: LinkedList<v8::Global<v8::PromiseResolver>>,
+}
+
+impl Debug for ModuleGraph {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("ModuleGraph")
+            .field(
+                "kind",
+                match self.kind {
+                    ImportKind::Static => &"Static",
+                    ImportKind::Dynamic(_) => &"Dynamic",
+                },
+            )
+            .field("root_rc", &self.root_rc)
+            .field(
+                "same_origin",
+                &format!("LinkedList<PromiseResolver>({})", self.same_origin.len()),
+            )
+            .finish()
+    }
 }
 
 impl ModuleGraph {
