@@ -183,8 +183,8 @@ impl EsModule {
         // If the module is ready, no need to check the sub-tree.
         if self.status == ModuleStatus::Ready {
             println!(
-                "|EsModule::fast_forward| status Ready {:?} {:?}",
-                self.path, self.status
+                "|EsModule::fast_forward| status({:?}) Ready {:?}",
+                self.status, self.path
             );
             return;
         }
@@ -194,14 +194,14 @@ impl EsModule {
             let status_ref = seen_modules.get(&self.path).unwrap();
             if status_ref == &ModuleStatus::Ready {
                 println!(
-                    "|EsModule::fast_forward| status Duplicate=>Ready {:?} {:?}",
-                    self.path, self.status
+                    "|EsModule::fast_forward| status({:?}) Duplicate=>Ready {:?}",
+                    self.status, self.path
                 );
                 self.status = ModuleStatus::Ready;
             }
             println!(
-                "|EsModule::fast_forward| status Duplicate{:?} {:?}",
-                self.path, self.status
+                "|EsModule::fast_forward| status({:?}) Duplicate{:?}",
+                self.status, self.path
             );
             return;
         }
@@ -214,8 +214,8 @@ impl EsModule {
         // The module is compiled and has 0 dependencies.
         if self.dependencies.is_empty() && self.status == ModuleStatus::Resolving {
             println!(
-                "|EsModule::fast_forward| status Resolving=>Ready {:?} {:?}",
-                self.path, self.status
+                "|EsModule::fast_forward| status({:?}) Resolving=>Ready {:?}",
+                self.status, self.path
             );
             self.status = ModuleStatus::Ready;
             seen_modules.insert(self.path.clone(), self.status);
@@ -229,8 +229,8 @@ impl EsModule {
         // At this point, the module is still being fetched...
         if self.dependencies.is_empty() {
             println!(
-                "|EsModule::fast_forward| status Fetching? {:?} {:?}",
-                self.path, self.status
+                "|EsModule::fast_forward| status({:?}) Fetching? {:?}",
+                self.status, self.path
             );
             return;
         }
@@ -242,8 +242,8 @@ impl EsModule {
             .any(|status| status != ModuleStatus::Ready)
         {
             println!(
-                "|EsModule::fast_forward| status ?=>Ready {:?} {:?}",
-                self.path, self.status
+                "|EsModule::fast_forward| status({:?}) ?=>Ready {:?}",
+                self.status, self.path
             );
             self.status = ModuleStatus::Ready;
             seen_modules.insert(self.path.clone(), self.status);
