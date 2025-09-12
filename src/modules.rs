@@ -19,6 +19,7 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 use std::collections::LinkedList;
 use std::env;
+use std::fmt::Debug;
 use std::fs;
 use std::path::Path;
 use std::rc::Rc;
@@ -83,6 +84,24 @@ pub struct ModuleMap {
     pub index: HashMap<ModulePath, v8::Global<v8::Module>>,
     pub seen: HashMap<ModulePath, ModuleStatus>,
     pub pending: Vec<Rc<RefCell<ModuleGraph>>>,
+}
+
+impl Debug for ModuleMap {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("ModuleMap")
+            .field("main", &self.main)
+            .field(
+                "index",
+                &self
+                    .index
+                    .iter()
+                    .map(|(k, _)| (k.clone(), "v8::Module".to_string()))
+                    .collect::<HashMap<ModulePath, String>>(),
+            )
+            .field("seen", &self.seen)
+            .field("pending", &self.pending)
+            .finish()
+    }
 }
 
 impl ModuleMap {
@@ -163,6 +182,10 @@ impl EsModule {
     pub fn fast_forward(&mut self, seen_modules: &mut HashMap<ModulePath, ModuleStatus>) {
         // If the module is ready, no need to check the sub-tree.
         if self.status == ModuleStatus::Ready {
+            println!(
+                "|EsModule::fast_forward| status({:?}) Ready {:?}",
+                self.status, self.path
+            );
             return;
         }
 
@@ -170,8 +193,16 @@ impl EsModule {
         if self.status == ModuleStatus::Duplicate {
             let status_ref = seen_modules.get(&self.path).unwrap();
             if status_ref == &ModuleStatus::Ready {
+                println!(
+                    "|EsModule::fast_forward| status({:?}) Duplicate=>Ready {:?}",
+                    self.status, self.path
+                );
                 self.status = ModuleStatus::Ready;
             }
+            println!(
+                "|EsModule::fast_forward| status({:?}) Duplicate{:?}",
+                self.status, self.path
+            );
             return;
         }
 
@@ -182,13 +213,25 @@ impl EsModule {
 
         // The module is compiled and has 0 dependencies.
         if self.dependencies.is_empty() && self.status == ModuleStatus::Resolving {
+            println!(
+                "|EsModule::fast_forward| status({:?}) Resolving=>Ready {:?}",
+                self.status, self.path
+            );
             self.status = ModuleStatus::Ready;
             seen_modules.insert(self.path.clone(), self.status);
+            println!(
+                "|EsModule::fast_forward| seen {:?} {:?}",
+                self.path, self.status
+            );
             return;
         }
 
         // At this point, the module is still being fetched...
         if self.dependencies.is_empty() {
+            println!(
+                "|EsModule::fast_forward| status({:?}) Fetching? {:?}",
+                self.status, self.path
+            );
             return;
         }
 
@@ -198,17 +241,39 @@ impl EsModule {
             .map(|m| m.borrow().status)
             .any(|status| status != ModuleStatus::Ready)
         {
+            println!(
+                "|EsModule::fast_forward| status({:?}) ?=>Ready {:?}",
+                self.status, self.path
+            );
             self.status = ModuleStatus::Ready;
             seen_modules.insert(self.path.clone(), self.status);
         }
     }
 }
 
-#[derive(Debug)]
 pub struct ModuleGraph {
     pub kind: ImportKind,
     pub root_rc: Rc<RefCell<EsModule>>,
     pub same_origin: LinkedList<v8::Global<v8::PromiseResolver>>,
+}
+
+impl Debug for ModuleGraph {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("ModuleGraph")
+            .field(
+                "kind",
+                match self.kind {
+                    ImportKind::Static => &"Static",
+                    ImportKind::Dynamic(_) => &"Dynamic",
+                },
+            )
+            .field("root_rc", &self.root_rc)
+            .field(
+                "same_origin",
+                &format!("LinkedList<PromiseResolver>({})", self.same_origin.len()),
+            )
+            .finish()
+    }
 }
 
 impl ModuleGraph {
@@ -249,6 +314,7 @@ impl ModuleGraph {
     }
 }
 
+#[derive(Debug)]
 pub struct EsModuleFuture {
     pub path: ModulePath,
     pub module: Rc<RefCell<EsModule>>,
@@ -317,6 +383,10 @@ impl JsFuture for EsModuleFuture {
 
         state.module_map.insert(self.path.as_str(), module_ref);
         state.module_map.seen.insert(self.path.clone(), new_status);
+        println!(
+            "|EsModuleFuture::run| seen(1) {:?} {:?}",
+            self.path, new_status
+        );
 
         let import_map = state.options.import_map.clone();
 
@@ -390,7 +460,8 @@ impl JsFuture for EsModuleFuture {
                     }
                 };
 
-                state.module_map.seen.insert(specifier, status);
+                state.module_map.seen.insert(specifier.clone(), status);
+                println!("|EsModuleFuture::run| seen(2) {:?} {:?}", specifier, status);
                 state.handle.spawn(task, Some(task_cb));
             }
         }

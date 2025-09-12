@@ -321,7 +321,9 @@ impl JsRuntime {
         let status = ModuleStatus::Fetching;
 
         state.module_map.pending.push(Rc::clone(&graph_rc));
+        println!("|JsRuntime::execute_module| pending {:?}", path);
         state.module_map.seen.insert(path.clone(), status);
+        println!("|JsRuntime::execute_module| seen {:?} {:?}", path, status);
 
         // If we have a source, create the es-module future.
         if let Some(source) = source {
@@ -389,6 +391,7 @@ impl JsRuntime {
             || self.has_pending_imports()
             || self.has_next_tick_callbacks()
         {
+            println!("|JsRuntime::run_event_loop| has_pending_events:{:?}, has_promise_rejections:{:?}, has_pending_background_tasks:{:?}, has_pending_imports:{:?}, has_next_tick_callbacks:{:?}", self.event_loop.has_pending_events(), self.has_promise_rejections(), self.isolate.has_pending_background_tasks(), self.has_pending_imports(), self.has_next_tick_callbacks());
             // Check for pending devtools messages.
             self.poll_inspect_session();
             // Tick the event-loop one cycle.
@@ -407,6 +410,11 @@ impl JsRuntime {
             let scope = &mut self.handle_scope();
             inspector.borrow_mut().context_destroyed(scope, context);
         }
+
+        println!(
+            "|JsRuntime::run_event_loop| module_map {:?}",
+            self.get_state().borrow().module_map
+        );
     }
 
     /// Runs all the pending javascript tasks.
@@ -426,6 +434,9 @@ impl JsRuntime {
         // the MicroTask and NextTick Queue.
 
         for mut fut in futures {
+            println!("|JsRuntime::run_pending_futures| run a fut");
+
+            // println!("run futures {:?}", fut);
             fut.run(scope);
             if let Some(error) = check_exceptions(scope) {
                 report_and_exit(error);
@@ -450,6 +461,14 @@ impl JsRuntime {
         let state_ref = &mut *state;
         let pending_graphs = &mut state_ref.module_map.pending;
         let seen_modules = &mut state_ref.module_map.seen;
+        println!(
+            "|JsRuntime::fast_forward_imports| pending_graphs {:?}",
+            pending_graphs
+        );
+        println!(
+            "|JsRuntime::fast_forward_imports| seen_modules{:?}",
+            seen_modules
+        );
 
         pending_graphs.retain(|graph_rc| {
             // Get a usable ref to graph's root module.
@@ -472,6 +491,10 @@ impl JsRuntime {
                     }
                 }
 
+                println!(
+                    "|JsRuntime::fast_forward_imports| failed {:?}",
+                    graph_root.path
+                );
                 return false;
             }
 
@@ -482,6 +505,10 @@ impl JsRuntime {
             }
 
             ready_imports.push(Rc::clone(graph_rc));
+            println!(
+                "|JsRuntime::fast_forward_imports| resolved {:?}",
+                graph_root.path
+            );
             false
         });
 
@@ -511,6 +538,7 @@ impl JsRuntime {
             }
 
             let _ = module.evaluate(tc_scope);
+            println!("|JsRuntime::fast_forward_imports| evaluated {:?}", path);
             let is_root_module = !graph.root_rc.borrow().is_dynamic_import;
 
             // Note: Due to the architecture, when a module errors, the `promise_reject_cb`

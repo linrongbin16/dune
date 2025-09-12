@@ -1,0 +1,82 @@
+|module_resolve_cb| referrer:Some("dune:environment/main"), specifier:"process"
+|module_resolve_cb| referrer:Some("dune:environment/main"), specifier:"timers"
+|module_resolve_cb| referrer:Some("dune:environment/main"), specifier:"@web/fetch"
+|module_resolve_cb| referrer:Some("dune:environment/main"), specifier:"@web/clone"
+|module_resolve_cb| referrer:Some("dune:environment/main"), specifier:"console"
+|module_resolve_cb| referrer:Some("dune:environment/main"), specifier:"@web/abort"
+|module_resolve_cb| referrer:Some("dune:environment/main"), specifier:"@web/text_encoding"
+|module_resolve_cb| referrer:Some("process"), specifier:"events"
+|module_resolve_cb| referrer:Some("process"), specifier:"util"
+|module_resolve_cb| referrer:Some("timers"), specifier:"assert"
+|module_resolve_cb| referrer:Some("@web/fetch"), specifier:"http"
+|module_resolve_cb| referrer:Some("http"), specifier:"net"
+|module_resolve_cb| referrer:Some("http"), specifier:"assert"
+|module_resolve_cb| referrer:Some("http"), specifier:"events"
+|module_resolve_cb| referrer:Some("net"), specifier:"dns"
+|module_resolve_cb| referrer:Some("net"), specifier:"assert"
+|module_resolve_cb| referrer:Some("net"), specifier:"events"
+|module_resolve_cb| referrer:Some("console"), specifier:"perf_hooks"
+|module_resolve_cb| referrer:Some("console"), specifier:"colors"
+|module_resolve_cb| referrer:Some("@web/abort"), specifier:"events"
+|JsRuntime::execute_module| pending "~/github/linrongbin16/dune/tests/monitor3/index.js"
+|JsRuntime::execute_module| seen "~/github/linrongbin16/dune/tests/monitor3/index.js" Fetching
+|JsRuntime::run_event_loop| has_pending_events:true, has_promise_rejections:false, has_pending_background_tasks:false, has_pending_imports:true, has_next_tick_callbacks:false
+|JsRuntime::fast_forward_imports| pending_graphs [RefCell { value: ModuleGraph { kind: "Static", root_rc: RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/index.js", status: Fetching, dependencies: [], exception: RefCell { value: None }, is_dynamic_import: false } }, same_origin: "LinkedList<PromiseResolver>(0)" } }]
+|JsRuntime::fast_forward_imports| seen_modules{"~/github/linrongbin16/dune/tests/monitor3/index.js": Fetching}
+|EsModule::fast_forward| status(Fetching) Fetching? "~/github/linrongbin16/dune/tests/monitor3/index.js"
+|JsRuntime::run_pending_futures| run a fut
+|EsModuleFuture::run| seen(1) "~/github/linrongbin16/dune/tests/monitor3/index.js" Resolving
+|JsRuntime::run_event_loop| has_pending_events:false, has_promise_rejections:false, has_pending_background_tasks:false, has_pending_imports:true, has_next_tick_callbacks:false
+|JsRuntime::fast_forward_imports| pending_graphs [RefCell { value: ModuleGraph { kind: "Static", root_rc: RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/index.js", status: Resolving, dependencies: [], exception: RefCell { value: None }, is_dynamic_import: false } }, same_origin: "LinkedList<PromiseResolver>(0)" } }]
+|JsRuntime::fast_forward_imports| seen_modules{"~/github/linrongbin16/dune/tests/monitor3/index.js": Resolving}
+|EsModule::fast_forward| status(Resolving) Resolving=>Ready "~/github/linrongbin16/dune/tests/monitor3/index.js"
+|EsModule::fast_forward| seen "~/github/linrongbin16/dune/tests/monitor3/index.js" Ready
+|JsRuntime::run_event_loop| has_pending_events:false, has_promise_rejections:false, has_pending_background_tasks:false, has_pending_imports:true, has_next_tick_callbacks:false
+|JsRuntime::fast_forward_imports| pending_graphs [RefCell { value: ModuleGraph { kind: "Static", root_rc: RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/index.js", status: Ready, dependencies: [], exception: RefCell { value: None }, is_dynamic_import: false } }, same_origin: "LinkedList<PromiseResolver>(0)" } }]
+|JsRuntime::fast_forward_imports| seen_modules{"~/github/linrongbin16/dune/tests/monitor3/index.js": Ready}
+|JsRuntime::fast_forward_imports| resolved "~/github/linrongbin16/dune/tests/monitor3/index.js"
+|host_import_module_dynamically_cb| base:"~/github/linrongbin16/dune/tests/monitor3/index.js", specifier:"./utils/a.js"
+|host_import_module_dynamically_cb| pending "~/github/linrongbin16/dune/tests/monitor3/utils/a.js" (base:"~/github/linrongbin16/dune/tests/monitor3/index.js")
+|host_import_module_dynamically_cb| seen "~/github/linrongbin16/dune/tests/monitor3/utils/a.js" Fetching (base:"~/github/linrongbin16/dune/tests/monitor3/index.js")
+|JsRuntime::fast_forward_imports| evaluated "~/github/linrongbin16/dune/tests/monitor3/index.js"
+|JsRuntime::run_pending_futures| run a fut
+|EsModuleFuture::run| seen(1) "~/github/linrongbin16/dune/tests/monitor3/utils/a.js" Resolving
+|EsModuleFuture::run| seen(2) "~/github/linrongbin16/dune/tests/monitor3/utils/b.js" Fetching
+|JsRuntime::run_event_loop| has_pending_events:true, has_promise_rejections:false, has_pending_background_tasks:false, has_pending_imports:true, has_next_tick_callbacks:false
+|JsRuntime::fast_forward_imports| pending_graphs [RefCell { value: ModuleGraph { kind: "Dynamic", root_rc: RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/a.js", status: Resolving, dependencies: [RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/b.js", status: Fetching, dependencies: [], exception: RefCell { value: None }, is_dynamic_import: true } }], exception: RefCell { value: None }, is_dynamic_import: true } }, same_origin: "LinkedList<PromiseResolver>(0)" } }]
+|JsRuntime::fast_forward_imports| seen_modules{"~/github/linrongbin16/dune/tests/monitor3/index.js": Ready, "~/github/linrongbin16/dune/tests/monitor3/utils/a.js": Resolving, "~/github/linrongbin16/dune/tests/monitor3/utils/b.js": Fetching}
+|EsModule::fast_forward| status(Fetching) Fetching? "~/github/linrongbin16/dune/tests/monitor3/utils/b.js"
+|JsRuntime::run_pending_futures| run a fut
+|EsModuleFuture::run| seen(1) "~/github/linrongbin16/dune/tests/monitor3/utils/b.js" Resolving
+|EsModuleFuture::run| seen(2) "~/github/linrongbin16/dune/tests/monitor3/utils/c.js" Fetching
+|JsRuntime::run_event_loop| has_pending_events:true, has_promise_rejections:false, has_pending_background_tasks:false, has_pending_imports:true, has_next_tick_callbacks:false
+|JsRuntime::fast_forward_imports| pending_graphs [RefCell { value: ModuleGraph { kind: "Dynamic", root_rc: RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/a.js", status: Resolving, dependencies: [RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/b.js", status: Resolving, dependencies: [RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/c.js", status: Fetching, dependencies: [], exception: RefCell { value: None }, is_dynamic_import: true } }], exception: RefCell { value: None }, is_dynamic_import: true } }], exception: RefCell { value: None }, is_dynamic_import: true } }, same_origin: "LinkedList<PromiseResolver>(0)" } }]
+|JsRuntime::fast_forward_imports| seen_modules{"~/github/linrongbin16/dune/tests/monitor3/index.js": Ready, "~/github/linrongbin16/dune/tests/monitor3/utils/a.js": Resolving, "~/github/linrongbin16/dune/tests/monitor3/utils/c.js": Fetching, "~/github/linrongbin16/dune/tests/monitor3/utils/b.js": Resolving}
+|EsModule::fast_forward| status(Fetching) Fetching? "~/github/linrongbin16/dune/tests/monitor3/utils/c.js"
+|JsRuntime::run_pending_futures| run a fut
+|EsModuleFuture::run| seen(1) "~/github/linrongbin16/dune/tests/monitor3/utils/c.js" Resolving
+|EsModuleFuture::run| seen(2) "~/github/linrongbin16/dune/tests/monitor3/utils/d.js" Fetching
+|JsRuntime::run_event_loop| has_pending_events:true, has_promise_rejections:false, has_pending_background_tasks:false, has_pending_imports:true, has_next_tick_callbacks:false
+|JsRuntime::fast_forward_imports| pending_graphs [RefCell { value: ModuleGraph { kind: "Dynamic", root_rc: RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/a.js", status: Resolving, dependencies: [RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/b.js", status: Resolving, dependencies: [RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/c.js", status: Resolving, dependencies: [RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/d.js", status: Fetching, dependencies: [], exception: RefCell { value: None }, is_dynamic_import: true } }], exception: RefCell { value: None }, is_dynamic_import: true } }], exception: RefCell { value: None }, is_dynamic_import: true } }], exception: RefCell { value: None }, is_dynamic_import: true } }, same_origin: "LinkedList<PromiseResolver>(0)" } }]
+|JsRuntime::fast_forward_imports| seen_modules{"~/github/linrongbin16/dune/tests/monitor3/index.js": Ready, "~/github/linrongbin16/dune/tests/monitor3/utils/d.js": Fetching, "~/github/linrongbin16/dune/tests/monitor3/utils/a.js": Resolving, "~/github/linrongbin16/dune/tests/monitor3/utils/c.js": Resolving, "~/github/linrongbin16/dune/tests/monitor3/utils/b.js": Resolving}
+|EsModule::fast_forward| status(Fetching) Fetching? "~/github/linrongbin16/dune/tests/monitor3/utils/d.js"
+|JsRuntime::run_pending_futures| run a fut
+|EsModuleFuture::run| seen(1) "~/github/linrongbin16/dune/tests/monitor3/utils/d.js" Resolving
+|JsRuntime::run_event_loop| has_pending_events:false, has_promise_rejections:false, has_pending_background_tasks:false, has_pending_imports:true, has_next_tick_callbacks:false
+|JsRuntime::fast_forward_imports| pending_graphs [RefCell { value: ModuleGraph { kind: "Dynamic", root_rc: RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/a.js", status: Resolving, dependencies: [RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/b.js", status: Resolving, dependencies: [RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/c.js", status: Resolving, dependencies: [RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/d.js", status: Resolving, dependencies: [], exception: RefCell { value: None }, is_dynamic_import: true } }], exception: RefCell { value: None }, is_dynamic_import: true } }], exception: RefCell { value: None }, is_dynamic_import: true } }], exception: RefCell { value: None }, is_dynamic_import: true } }, same_origin: "LinkedList<PromiseResolver>(0)" } }]
+|JsRuntime::fast_forward_imports| seen_modules{"~/github/linrongbin16/dune/tests/monitor3/index.js": Ready, "~/github/linrongbin16/dune/tests/monitor3/utils/d.js": Resolving, "~/github/linrongbin16/dune/tests/monitor3/utils/a.js": Resolving, "~/github/linrongbin16/dune/tests/monitor3/utils/c.js": Resolving, "~/github/linrongbin16/dune/tests/monitor3/utils/b.js": Resolving}
+|EsModule::fast_forward| status(Resolving) Resolving=>Ready "~/github/linrongbin16/dune/tests/monitor3/utils/d.js"
+|EsModule::fast_forward| seen "~/github/linrongbin16/dune/tests/monitor3/utils/d.js" Ready
+|EsModule::fast_forward| status(Resolving) ?=>Ready "~/github/linrongbin16/dune/tests/monitor3/utils/c.js"
+|EsModule::fast_forward| status(Resolving) ?=>Ready "~/github/linrongbin16/dune/tests/monitor3/utils/b.js"
+|EsModule::fast_forward| status(Resolving) ?=>Ready "~/github/linrongbin16/dune/tests/monitor3/utils/a.js"
+|JsRuntime::run_event_loop| has_pending_events:false, has_promise_rejections:false, has_pending_background_tasks:false, has_pending_imports:true, has_next_tick_callbacks:false
+|JsRuntime::fast_forward_imports| pending_graphs [RefCell { value: ModuleGraph { kind: "Dynamic", root_rc: RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/a.js", status: Ready, dependencies: [RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/b.js", status: Ready, dependencies: [RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/c.js", status: Ready, dependencies: [RefCell { value: EsModule { path: "~/github/linrongbin16/dune/tests/monitor3/utils/d.js", status: Ready, dependencies: [], exception: RefCell { value: None }, is_dynamic_import: true } }], exception: RefCell { value: None }, is_dynamic_import: true } }], exception: RefCell { value: None }, is_dynamic_import: true } }], exception: RefCell { value: None }, is_dynamic_import: true } }, same_origin: "LinkedList<PromiseResolver>(0)" } }]
+|JsRuntime::fast_forward_imports| seen_modules{"~/github/linrongbin16/dune/tests/monitor3/index.js": Ready, "~/github/linrongbin16/dune/tests/monitor3/utils/d.js": Ready, "~/github/linrongbin16/dune/tests/monitor3/utils/a.js": Ready, "~/github/linrongbin16/dune/tests/monitor3/utils/c.js": Ready, "~/github/linrongbin16/dune/tests/monitor3/utils/b.js": Ready}
+|JsRuntime::fast_forward_imports| resolved "~/github/linrongbin16/dune/tests/monitor3/utils/a.js"
+|module_resolve_cb| referrer:Some("~/github/linrongbin16/dune/tests/monitor3/utils/a.js"), specifier:"./b.js"
+|module_resolve_cb| referrer:Some("~/github/linrongbin16/dune/tests/monitor3/utils/b.js"), specifier:"./c.js"
+|module_resolve_cb| referrer:Some("~/github/linrongbin16/dune/tests/monitor3/utils/c.js"), specifier:"./d.js"
+|JsRuntime::fast_forward_imports| evaluated "~/github/linrongbin16/dune/tests/monitor3/utils/a.js"
+D:C:B:A:3
+|JsRuntime::run_event_loop| module_map ModuleMap { main: Some("http"), index: {"timers": "v8::Module", "@web/text_encoding": "v8::Module", "~/github/linrongbin16/dune/tests/monitor3/utils/a.js": "v8::Module", "~/github/linrongbin16/dune/tests/monitor3/utils/c.js": "v8::Module", "@web/clone": "v8::Module", "assert": "v8::Module", "console": "v8::Module", "~/github/linrongbin16/dune/tests/monitor3/index.js": "v8::Module", "colors": "v8::Module", "util": "v8::Module", "~/github/linrongbin16/dune/tests/monitor3/utils/d.js": "v8::Module", "perf_hooks": "v8::Module", "process": "v8::Module", "http": "v8::Module", "dns": "v8::Module", "@web/abort": "v8::Module", "@web/fetch": "v8::Module", "dune:environment/main": "v8::Module", "net": "v8::Module", "~/github/linrongbin16/dune/tests/monitor3/utils/b.js": "v8::Module", "events": "v8::Module"}, seen: {"~/github/linrongbin16/dune/tests/monitor3/index.js": Ready, "~/github/linrongbin16/dune/tests/monitor3/utils/d.js": Ready, "~/github/linrongbin16/dune/tests/monitor3/utils/a.js": Ready, "~/github/linrongbin16/dune/tests/monitor3/utils/c.js": Ready, "~/github/linrongbin16/dune/tests/monitor3/utils/b.js": Ready}, pending: [] }
