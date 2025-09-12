@@ -230,7 +230,10 @@ impl EsModule {
         if self.dependencies.is_empty() && self.status == ModuleStatus::Resolving {
             self.status = ModuleStatus::Ready;
             seen_modules.insert(self.path.clone(), self.status);
-            seen_counter.increase_seen(&self.path);
+            println!(
+                "|EsModule::fast_forward| seen {:?} {:?}",
+                self.path, self.status
+            );
             return;
         }
 
@@ -365,7 +368,10 @@ impl JsFuture for EsModuleFuture {
 
         state.module_map.insert(self.path.as_str(), module_ref);
         state.module_map.seen.insert(self.path.clone(), new_status);
-        state.module_map.counter.increase_seen(&self.path);
+        println!(
+            "|EsModuleFuture::run| seen {:?} {:?}",
+            self.path, new_status
+        );
 
         let import_map = state.options.import_map.clone();
 

@@ -222,13 +222,13 @@ pub fn host_import_module_dynamically_cb<'s>(
 
     state.module_map.pending.push(Rc::clone(&graph_rc));
     println!(
-        "host_import_module_dynamically_cb| pending {:?} (base:{:?})",
+        "|host_import_module_dynamically_cb| pending {:?} (base:{:?})",
         specifier, base
     );
     state.module_map.seen.insert(specifier.clone(), status);
     println!(
-        "host_import_module_dynamically_cb| seen {:?} (base:{:?})",
-        specifier, base
+        "|host_import_module_dynamically_cb| seen {:?} {:?} (base:{:?})",
+        specifier, status, base
     );
 
     /*  Use the event-loop to asynchronously load the requested module. */

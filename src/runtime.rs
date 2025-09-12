@@ -321,9 +321,9 @@ impl JsRuntime {
         let status = ModuleStatus::Fetching;
 
         state.module_map.pending.push(Rc::clone(&graph_rc));
-        state.module_map.counter.increase_pending(&path);
+        println!("|JsRuntime::execute_module| pending {:?}", path);
         state.module_map.seen.insert(path.clone(), status);
-        state.module_map.counter.increase_seen(&path);
+        println!("|JsRuntime::execute_module| seen {:?} {:?}", path, status);
 
         // If we have a source, create the es-module future.
         if let Some(source) = source {
