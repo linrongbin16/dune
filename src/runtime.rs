@@ -391,7 +391,7 @@ impl JsRuntime {
             || self.has_pending_imports()
             || self.has_next_tick_callbacks()
         {
-            println!("has_pending_events:{:?}, has_promise_rejections:{:?}, has_pending_background_tasks:{:?}, has_pending_imports:{:?}, has_next_tick_callbacks:{:?}", self.event_loop.has_pending_events(), self.has_promise_rejections(), self.isolate.has_pending_background_tasks(), self.has_pending_imports(), self.has_next_tick_callbacks());
+            println!("|JsRuntime::run_event_loop| has_pending_events:{:?}, has_promise_rejections:{:?}, has_pending_background_tasks:{:?}, has_pending_imports:{:?}, has_next_tick_callbacks:{:?}", self.event_loop.has_pending_events(), self.has_promise_rejections(), self.isolate.has_pending_background_tasks(), self.has_pending_imports(), self.has_next_tick_callbacks());
             // Check for pending devtools messages.
             self.poll_inspect_session();
             // Tick the event-loop one cycle.
@@ -461,8 +461,14 @@ impl JsRuntime {
         let state_ref = &mut *state;
         let pending_graphs = &mut state_ref.module_map.pending;
         let seen_modules = &mut state_ref.module_map.seen;
-        let counter = &mut state_ref.module_map.counter;
-        println!("pending_graphs {:?}", pending_graphs);
+        println!(
+            "|JsRuntime::fast_forward_imports| pending_graphs {:?}",
+            pending_graphs
+        );
+        println!(
+            "|JsRuntime::fast_forward_imports| seen_modules{:?}",
+            seen_modules
+        );
 
         pending_graphs.retain(|graph_rc| {
             // Get a usable ref to graph's root module.
@@ -494,7 +500,7 @@ impl JsRuntime {
 
             // If the graph is still loading, fast-forward the dependencies.
             if graph_root.status != ModuleStatus::Ready {
-                graph_root.fast_forward(seen_modules, counter);
+                graph_root.fast_forward(seen_modules);
                 return true;
             }
 

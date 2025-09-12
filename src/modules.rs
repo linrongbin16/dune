@@ -160,11 +160,7 @@ pub struct EsModule {
 
 impl EsModule {
     // Traverses the dependency tree to check if the module is ready.
-    pub fn fast_forward(
-        &mut self,
-        seen_modules: &mut HashMap<ModulePath, ModuleStatus>,
-        seen_counter: &mut ModuleMapCounter,
-    ) {
+    pub fn fast_forward(&mut self, seen_modules: &mut HashMap<ModulePath, ModuleStatus>) {
         // If the module is ready, no need to check the sub-tree.
         if self.status == ModuleStatus::Ready {
             return;
@@ -182,7 +178,7 @@ impl EsModule {
         // Fast-forward all dependencies.
         self.dependencies
             .iter_mut()
-            .for_each(|dep| dep.borrow_mut().fast_forward(seen_modules, seen_counter));
+            .for_each(|dep| dep.borrow_mut().fast_forward(seen_modules));
 
         // The module is compiled and has 0 dependencies.
         if self.dependencies.is_empty() && self.status == ModuleStatus::Resolving {
