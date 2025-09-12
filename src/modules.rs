@@ -129,48 +129,6 @@ impl ModuleMap {
     }
 }
 
-#[derive(Debug, Default, Clone)]
-pub struct ModuleMapCounter {
-    pub seen: HashMap<ModulePath, u32>,
-    pub pending: HashMap<ModulePath, u32>,
-    pub resolved: HashMap<ModulePath, u32>,
-    pub failed: HashMap<ModulePath, u32>,
-    pub instantiated: HashMap<ModulePath, u32>,
-    pub evaluated: HashMap<ModulePath, u32>,
-}
-
-impl ModuleMapCounter {
-    pub fn increase_seen(&mut self, specifier: &str) {
-        let old = self.seen.get(specifier).unwrap_or(&0);
-        self.seen.insert(specifier.into(), old + 1);
-    }
-
-    pub fn increase_pending(&mut self, specifier: &str) {
-        let old = self.pending.get(specifier).unwrap_or(&0);
-        self.pending.insert(specifier.into(), old + 1);
-    }
-
-    pub fn increase_resolved(&mut self, specifier: &str) {
-        let old = self.resolved.get(specifier).unwrap_or(&0);
-        self.resolved.insert(specifier.into(), old + 1);
-    }
-
-    pub fn increase_failed(&mut self, specifier: &str) {
-        let old = self.failed.get(specifier).unwrap_or(&0);
-        self.failed.insert(specifier.into(), old + 1);
-    }
-
-    pub fn increase_instantiated(&mut self, specifier: &str) {
-        let old = self.instantiated.get(specifier).unwrap_or(&0);
-        self.instantiated.insert(specifier.into(), old + 1);
-    }
-
-    pub fn increase_evaluated(&mut self, specifier: &str) {
-        let old = self.evaluated.get(specifier).unwrap_or(&0);
-        self.evaluated.insert(specifier.into(), old + 1);
-    }
-}
-
 #[derive(Debug, Clone)]
 pub enum ImportKind {
     // Loading static imports.
@@ -369,7 +327,7 @@ impl JsFuture for EsModuleFuture {
         state.module_map.insert(self.path.as_str(), module_ref);
         state.module_map.seen.insert(self.path.clone(), new_status);
         println!(
-            "|EsModuleFuture::run| seen {:?} {:?}",
+            "|EsModuleFuture::run| seen(1) {:?} {:?}",
             self.path, new_status
         );
 
@@ -446,7 +404,7 @@ impl JsFuture for EsModuleFuture {
                 };
 
                 state.module_map.seen.insert(specifier.clone(), status);
-                state.module_map.counter.increase_seen(&specifier);
+                println!("|EsModuleFuture::run| seen(2) {:?} {:?}", specifier, status);
                 state.handle.spawn(task, Some(task_cb));
             }
         }

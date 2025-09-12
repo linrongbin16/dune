@@ -485,7 +485,10 @@ impl JsRuntime {
                     }
                 }
 
-                counter.increase_failed(&graph_root.path);
+                println!(
+                    "|JsRuntime::fast_forward_imports| failed {:?}",
+                    graph_root.path
+                );
                 return false;
             }
 
@@ -496,8 +499,10 @@ impl JsRuntime {
             }
 
             ready_imports.push(Rc::clone(graph_rc));
-            counter.increase_resolved(&graph_root.path);
-            println!("module_graph {:?} is ready", &graph_root.path);
+            println!(
+                "|JsRuntime::fast_forward_imports| resolved {:?}",
+                graph_root.path
+            );
             false
         });
 
@@ -520,28 +525,14 @@ impl JsRuntime {
                 .instantiate_module(tc_scope, module_resolve_cb)
                 .is_none()
             {
-                state_rc
-                    .borrow_mut()
-                    .module_map
-                    .counter
-                    .increase_instantiated(&path);
                 assert!(tc_scope.has_caught());
                 let exception = tc_scope.exception().unwrap();
                 let exception = JsError::from_v8_exception(tc_scope, exception, None);
                 report_and_exit(exception);
             }
-            state_rc
-                .borrow_mut()
-                .module_map
-                .counter
-                .increase_instantiated(&path);
 
             let _ = module.evaluate(tc_scope);
-            state_rc
-                .borrow_mut()
-                .module_map
-                .counter
-                .increase_evaluated(&path);
+            println!("|JsRuntime::fast_forward_imports| evaluated {:?}", path);
             let is_root_module = !graph.root_rc.borrow().is_dynamic_import;
 
             // Note: Due to the architecture, when a module errors, the `promise_reject_cb`
