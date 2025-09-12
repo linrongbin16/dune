@@ -412,8 +412,8 @@ impl JsRuntime {
         }
 
         println!(
-            "Module map counter/monitor:{:?}",
-            self.get_state().borrow().module_map.counter
+            "|JsRuntime::run_event_loop| module_map {:?}",
+            self.get_state().borrow().module_map
         );
     }
 
@@ -434,7 +434,7 @@ impl JsRuntime {
         // the MicroTask and NextTick Queue.
 
         for mut fut in futures {
-            println!("Run a future");
+            println!("|JsRuntime::run_pending_futures| run a fut");
 
             // println!("run futures {:?}", fut);
             fut.run(scope);

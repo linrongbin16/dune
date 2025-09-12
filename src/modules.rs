@@ -78,6 +78,7 @@ pub fn create_origin<'s>(
 pub type ModulePath = String;
 pub type ModuleSource = String;
 
+#[derive(Debug)]
 pub struct ModuleMap {
     pub main: Option<ModulePath>,
     pub index: HashMap<ModulePath, v8::Global<v8::Module>>,
