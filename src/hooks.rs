@@ -158,10 +158,6 @@ pub fn host_import_module_dynamically_cb<'s>(
     // Get module base and specifier as strings.
     let base = base.to_rust_string_lossy(scope);
     let specifier = specifier.to_rust_string_lossy(scope);
-    println!(
-        "host_import_module_dynamically_cb base:{:?}, specifier:{:?}",
-        base, specifier
-    );
 
     // Create the import promise.
     let promise_resolver = v8::PromiseResolver::new(scope).unwrap();
@@ -225,8 +221,15 @@ pub fn host_import_module_dynamically_cb<'s>(
     let status = ModuleStatus::Fetching;
 
     state.module_map.pending.push(Rc::clone(&graph_rc));
+    println!(
+        "host_import_module_dynamically_cb| pending {:?} (base:{:?})",
+        specifier, base
+    );
     state.module_map.seen.insert(specifier.clone(), status);
-    state.module_map.counter.increase_seen(&specifier);
+    println!(
+        "host_import_module_dynamically_cb| seen {:?} (base:{:?})",
+        specifier, base
+    );
 
     /*  Use the event-loop to asynchronously load the requested module. */
 

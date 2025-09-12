@@ -83,9 +83,6 @@ pub struct ModuleMap {
     pub index: HashMap<ModulePath, v8::Global<v8::Module>>,
     pub seen: HashMap<ModulePath, ModuleStatus>,
     pub pending: Vec<Rc<RefCell<ModuleGraph>>>,
-
-    // Only for testing
-    pub counter: ModuleMapCounter,
 }
 
 impl ModuleMap {
@@ -96,7 +93,6 @@ impl ModuleMap {
             index: HashMap::new(),
             seen: HashMap::new(),
             pending: vec![],
-            counter: ModuleMapCounter::default(),
         }
     }
 

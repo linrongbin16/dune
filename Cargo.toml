@@ -60,7 +60,12 @@ axum = { version = "0.8.4", features = ["ws"] }
 uuid = { version = "1.18.0", features = ["v4", "fast-rng"] }
 base64 = "0.22.1"
 indicatif = "0.18.0"
-rusqlite = { version = "0.37.0", features = ["bundled", "load_extension", "column_decltype", "column_metadata"] }
+rusqlite = { version = "0.37.0", features = [
+  "bundled",
+  "load_extension",
+  "column_decltype",
+  "column_metadata",
+] }
 
 [target.'cfg(unix)'.dependencies]
 nix = { version = "0.30.1", features = ["signal"] }
